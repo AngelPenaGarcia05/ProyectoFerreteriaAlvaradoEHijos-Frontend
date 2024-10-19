@@ -1,0 +1,121 @@
+<app-navbar></app-navbar>
+<main>
+    <section id="banner">
+        <div class="banner-container">
+            <h2>- Ferretería Online -</h2>
+            <h3>Ofrecemos los mejores productos al mejor precio de la ciudad</h3>
+            <p>En nuestra ferretería, encontrarás todo lo que necesitas para llevar tus proyectos de construcción,
+                renovación y bricolaje al siguiente nivel, con herramientas de calidad, asesoría especializada y un
+                servicio que te acompaña en cada paso del camino.</p>
+        </div>
+    </section>
+    <section id="image">
+        <img src="fondo-ferreteria2-1.jpg" alt="">
+        <div class="triangle-categories-decorator-superior"></div>
+        <div class="triangle-categories-decorator-inferior"></div>
+    </section>
+    <section id="categories">
+        <h2>- Categorias -</h2>
+        <div class="categories-container">
+            <div (click)="openCategoryRoute('Herramientas')" class="category-card">
+                <img src="taladro-de-mano.png" class="card-img" alt="">
+                <h3 class="card-title">Herramientas</h3>
+            </div>
+            <div (click)="openCategoryRoute('Ferreteria')" class="category-card">
+                <img src="tornillo.png" class="card-img" alt="">
+                <h3 class="card-title">Ferreteria</h3>
+            </div>
+            <div (click)="openCategoryRoute('Construcción')" class="category-card">
+                <img src="sitio-de-construccion.png" class="card-img" alt="">
+                <h3 class="card-title">Construcción</h3>
+            </div>
+            <div (click)="openCategoryRoute('Electricidad')" class="category-card">
+                <img src="electricidad-logo.png" class="card-img" alt="">
+                <h3 class="card-title">Electricidad</h3>
+            </div>
+            <div (click)="openCategoryRoute('Pinturas')" class="category-card">
+                <img src="pinturas-logo.png" class="card-img" alt="">
+                <h3 class="card-title">Pinturas</h3>
+            </div>
+            <div (click)="openCategoryRoute('Plomeria')" class="category-card">
+                <img src="plomeria-logo.png" class="card-img" alt="">
+                <h3 class="card-title">Plomeria</h3>
+            </div>
+            <div (click)="openCategoryRoute('Jardineria')" class="category-card">
+                <img src="jardineria-logo.png" class="card-img" alt="">
+                <h3 class="card-title">Jardinería</h3>
+            </div>
+            <div (click)="openCategoryRoute('Carpinteria')" class="category-card">
+                <img src="carpinteria-logo.png" class="card-img" alt="">
+                <h3 class="card-title">Carpintería</h3>
+            </div>
+            <div (click)="openCategoryRoute('Seguridad')" class="category-card">
+                <img src="seguridad-logo.png" class="card-img" alt="">
+                <h3 class="card-title">Seguridad</h3>
+            </div>
+        </div>
+        <div class="triangle-categories-decorator-superior"></div>
+        <div class="triangle-categories-decorator-inferior"></div>
+    </section>
+    <section id="advantages">
+        <h2>- Ventajas -</h2>
+        <div class="advantages-container">
+            <div class="advantage-card">
+                <img src="experiencia-ventaja.png" class="card-img" alt="">
+                <div class="advantage-body">
+                    <h3 class="card-title">Experiencia y Trayectoria Reconocida</h3>
+                    <p>Con años de experiencia en el mercado local de Ica, nuestra ferretería se ha consolidado como una
+                        opción confiable para nuestros clientes. Nos respaldan años de dedicación y compromiso en
+                        ofrecer soluciones de calidad para cada proyecto, ya sea grande o pequeño.</p>
+                </div>
+            </div>
+            <div class="advantage-card">
+                <img src="ubicacion-ventaja.png" class="card-img" alt="">
+                <div class="advantage-body">
+                    <h3 class="card-title">Ubicación Estratégica y Accesible</h3>
+                    <p>Ubicados en el corazón de Ica, nuestra tienda está en una posición privilegiada que nos permite
+                        estar cerca de ti. Esto no solo facilita la visita de nuestros clientes, sino que también nos
+                        permite ofrecer un servicio ágil y eficiente a toda la comunidad.</p>
+                </div>
+            </div>
+            <div class="advantage-card">
+                <img src="productos-ventaja.png" class="card-img" alt="">
+                <div class="advantage-body">
+                    <h3 class="card-title">Amplia Variedad de Productos para Cada Necesidad</h3>
+                    <p>Ofrecemos una gran variedad de productos para la construcción, el hogar y el bricolaje. Desde
+                        herramientas de mano hasta materiales especializados, contamos con todo lo que necesitas para
+                        llevar a cabo tus proyectos con la confianza de encontrar siempre lo que buscas.</p>
+                </div>
+            </div>
+        </div>
+        <div class="triangle-advantages-decorator-superior"></div>
+        <div class="triangle-advantages-decorator-inferior"></div>
+    </section>
+</main>
+<footer>
+    <div class="contact-container">
+        <div class="contact-info">
+            <h3>Contáctanos</h3>
+            <p>Si tienes alguna pregunta, dudas o sugerencia, no dudes en ponerte en contacto con nosotros.</p>
+            <div class="contact-icons">
+                <div class="contact-icon">
+                    <img src="llamada-telefonica.png" alt="">
+                    <p>+51 971 135 997</p>
+                </div>
+                <div class="contact-icon">
+                    <img src="correo.png" alt="">
+                    <p>{{correoFerreteria}}</p>
+                </div>
+            </div>
+        </div>
+        <form class="contact-form" [formGroup]="formMail" (ngSubmit)="sendMessage()">
+            <input type="text" placeholder="Nombre" id="name" formControlName="name"
+                [class]="validInputs('name', 'text')">
+            <input type="text" placeholder="Email" id="email" formControlName="email"
+                [class]="validInputs('email', 'email')">
+            <textarea placeholder="Mensaje" id="message" formControlName="message"
+                [class]="validInputs('message', 'textarea')"></textarea>
+            <button type="submit" [disabled]="formMail.invalid" [class]="this.formMail.invalid ? 'invalid-input' : ''">Enviar</button>
+        </form>
+    </div>
+</footer>

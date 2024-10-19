@@ -1,0 +1,228 @@
+/* estilos del header */
+header {
+    position: relative;
+    height: 300px;
+    width: 100%;
+    background-color: var(--color-blue-transparent);
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+/* estilos de la imagen del header */
+.header-img {
+    position: absolute;
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+
+    img {
+        width: 100%;
+        animation: scale-blucle 10s ease-in-out infinite;
+    }
+}
+
+/* estilos de los contactos del header */
+.navabar-contact-container {
+    position: absolute;
+    right: 0;
+    top: 50px;
+    z-index: 1;
+    height: 30px;
+    width: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 20px;
+    background-color: var(--color-orange);
+    padding: 10px;
+    color: #ffffff;
+    font-weight: bold;
+
+    a {
+        height: 100%;
+    }
+
+    img {
+        height: 100%;
+        filter: invert();
+        transition: all .2s ease;
+    }
+
+    img:hover {
+        scale: 1.1;
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100px;
+        width: 0px;
+        height: 0px;
+        border-style: solid;
+        border-width: 0 0 50px 100px;
+        border-color: transparent transparent var(--color-orange) transparent;
+    }
+}
+
+/* estilos del navbar */
+.navbar-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 20px;
+}
+
+.navbar-logo {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-logo img {
+    height: 100px;
+    transition: all .3s ease;
+
+    &:hover {
+        scale: 1.05;
+    }
+}
+
+.navbar-toggle {
+    display: none;
+}
+
+.navbar-list {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    .navbar-carrito{
+        filter: invert();
+    }
+}
+
+.navbar-item {
+    padding-inline: 20px;
+    border-right: 2px solid rgb(255, 255, 255);
+    position: relative;
+    transition: all .3s ease;
+
+    &::after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-bottom: 5px solid var(--color-orange);
+        transition: all .3s ease;
+    }
+
+    &:hover::after {
+        width: 80%;
+        left: 10%;
+    }
+
+    &:last-child {
+        border-right: none;
+    }
+
+    &>a {
+        text-decoration: none;
+        color: #ffffff;
+        transition: all .3s ease;
+
+        &:hover {
+            color: var(--color-orange);
+        }
+    }
+}
+
+.triangle-header-decorator {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-bottom-width: 100px;
+    border-left-width: 100vw;
+    border-color: transparent transparent #ffffff transparent;
+}
+.x-image{
+    display:none;
+}
+@media (width <=768px) {
+    html {
+        width: 100vw;
+    }
+    header{
+        height: 200px;
+        overflow: visible;
+    }
+
+    .navbar-toggle {
+        display: block;
+    }
+
+    .triangle-header-decorator,
+    .navabar-contact-container,
+    .header-img {
+        display: none;
+    }
+
+    .navbar-container {
+        background-color: var(--color-blue);
+    }
+
+    .navbar-logo {
+        height: 50px;
+    }
+
+    .navbar-toggle {
+        width: 50px;
+        filter: invert();
+        cursor: pointer;
+
+        img {
+            width: 100%;
+        }
+    }
+
+    .navbar-list {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        justify-content: flex-start;
+        align-items: center;
+        background-color: var(--color-orange);
+        flex-direction: column;
+        transform: translateX(-100%);
+        transition: all 0.5s ease-in-out;
+        a {
+            color: #ffffff;
+            font-weight: bold;
+        }
+        .x-image{
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            display: block;
+            height: 30px;
+            filter: invert();
+        }
+    }
+
+    .navbar-item {
+        border: none;
+        padding: 20px 10px;
+    }
+}

@@ -1,1 +1,67 @@
-/* You can add global styles to this file, and also import other style files */
+@keyframes scale-blucle {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+@keyframes moveright {
+    0% {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+@keyframes moveleft {
+    0% {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+@keyframes moveup {
+    0% {
+        opacity: 0;
+        transform: translateY(100%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* estilos globales */
+:root {
+    --color-blue-transparent: #003c71d4;
+    --color-blue: #003c71;
+    --color-blue-light: #0067c1;
+    --color-orange: #ff8d00;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    font-size: 16px;
+}
+body {
+    background-color: rgb(255, 255, 255);
+    font-family: Arial, Helvetica, sans-serif;
+    width: 100vw;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}

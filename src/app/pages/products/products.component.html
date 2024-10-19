@@ -1,0 +1,50 @@
+<app-navbar></app-navbar>
+<div class="container">
+    <section class="filters">
+        <h2>Filtrar Productos</h2>
+        <form id="filterForm" [formGroup]="filterForm" (ngSubmit)="setFiltersInRoute()">
+            <input type="text" id="nameFilter" formControlName="nameFilter" placeholder="Buscar por nombre...">
+
+            <select id="categoryFilter" formControlName="categoryFilter">
+                <option value="">Todas las categorías</option>
+                <option value="herramientas">Herramientas</option>
+                <option value="ferreteria">Ferreteria</option>
+                <option value="construccion">Construcción</option>
+                <option value="electricidad">Electricidad</option>
+                <option value="pinturas">Pinturas</option>
+                <option value="plomeria">Plomeria</option>
+                <option value="jardineria">Jardinería</option>
+                <option value="carpinteria">Carpintería</option>
+                <option value="seguridad">Seguridad</option>
+            </select>
+            <!--
+            <div class="price-range">
+                <input type="number" id="minPrice" placeholder="Precio mínimo">
+                <input type="number" id="maxPrice" placeholder="Precio máximo">
+            </div>
+-->
+            <button type="submit">Aplicar Filtros</button>
+        </form>
+    </section>
+
+    <section class="product-grid">
+        @for (producto of productos | async; track $index) {
+            @defer (on viewport) {
+                <div class="product-card">
+                    <div class="product-image">
+                        <img [src]="producto.imagenURL" [alt]="'Producto ' + producto.id">
+                    </div>
+                    <h3>{{producto.nombre}}</h3>
+                    <div>
+                        <p>S/ {{producto.precio}}</p>
+                        <button (click)="viewProductDetails(producto.id)">Ver más</button>
+                    </div>
+                </div>
+            }@placeholder {
+                <app-product-loading/>
+            }@loading {
+                <app-product-loading/>
+            }
+        }
+    </section>
+</div>
