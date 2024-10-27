@@ -4,6 +4,9 @@ import { ProductsComponent } from './pages/products/products.component';
 import { AboutComponent } from './pages/about/about.component';
 import { ProductDetailComponent } from './pages/product-detail/product-detail.component';
 import { ShoppingCartComponent } from './pages/shopping-cart/shopping-cart.component';
+import { LoginComponent } from './pages/login/login.component';
+import { RegisterComponent } from './pages/register/register.component';
+import { ProveedoresComponent } from './pages/proveedores/proveedores.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -11,5 +14,8 @@ export const routes: Routes = [
     { path: 'about', component: AboutComponent},
     { path: 'productos', component: ProductsComponent},
     { path: 'productos/:id', component: ProductDetailComponent },
-    { path: 'shopping-cart', component: ShoppingCartComponent}
+    { path: 'shopping-cart', component: ShoppingCartComponent},
+    { path: 'login', component: LoginComponent},
+    { path: 'registro', component: RegisterComponent},
+    { path: 'proveedores', component: ProveedoresComponent}
 ];

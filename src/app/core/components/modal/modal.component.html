@@ -1,0 +1,14 @@
+<div class="modal" [ngClass]="{ 'show': isOpen }" (click)="closeModal()">
+    <div class="modal-dialog" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h2><ng-content select="[modal-header]"></ng-content></h2>
+            <button class="close-btn" (click)="closeModal()">×</button>
+        </div>
+        <div class="modal-body">
+            <ng-content select="[modal-body]"></ng-content>
+        </div>
+        <div class="modal-footer">
+            <ng-content select="[modal-footer]"></ng-content>
+        </div>
+    </div>
+</div>

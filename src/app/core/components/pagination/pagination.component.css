@@ -1,0 +1,22 @@
+.pagination-container {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .circle {
+    width: 15px;
+    height: 15px;
+    padding: 10px;
+    background-color: lightgray;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .circle.active {
+    background-color: var(--color-blue);
+    color: white;
+  }
+  

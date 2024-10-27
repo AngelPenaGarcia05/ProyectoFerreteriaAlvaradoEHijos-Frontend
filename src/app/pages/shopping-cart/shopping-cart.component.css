@@ -32,8 +32,11 @@ h1 {
 
 .cart-table td {
     font-size: 1em;
+    height: 38px;
 }
-
+.cart-table td img {
+    height: 90%;
+}
 .quantity {
     display: flex;
     justify-content: center;
@@ -85,8 +88,8 @@ h1 {
 }
 
 .cart-total h2 {
-    font-size: 2em;
-    color: #27ae60;
+    font-size: 1.5em;
+    color: var(--color-blue);
 }
 
 @media (max-width: 768px) {

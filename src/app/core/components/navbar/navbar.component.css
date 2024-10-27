@@ -136,6 +136,7 @@ header {
         text-decoration: none;
         color: #ffffff;
         transition: all .3s ease;
+        cursor: pointer;
 
         &:hover {
             color: var(--color-orange);
@@ -157,6 +158,11 @@ header {
 .x-image{
     display:none;
 }
+
+
+
+
+
 @media (width <=768px) {
     html {
         width: 100vw;

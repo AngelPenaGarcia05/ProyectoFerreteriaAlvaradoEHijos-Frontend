@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
 import { Producto } from '../interfaces/producto';
 
 @Injectable({
@@ -16,10 +16,8 @@ export class ProductoService {
       { params: httpParams }
     );
   }
-  getProductsPaginated(inicio: number, cantidadPorPagina: number): Observable<{productos: Producto[], cantidad: number}> {
-    return this.http.get<{productos: Producto[], cantidad: number}>(environment.apiUrl + 'productos/pagination', 
-      { params: { inicio: inicio, cantidad: cantidadPorPagina } }
-    );
+  getQuantityProducts(httpParams: any): Observable<number>{
+    return this.http.get<number>(environment.apiUrl + 'productos/cantidad', { params: httpParams });
   }
   getProductById(id: number): Observable<Producto> {
     return this.http.get<Producto>(environment.apiUrl + 'productos/' + id);
@@ -28,5 +26,30 @@ export class ProductoService {
     return this.http.get<Producto[]>(environment.apiUrl + 'productos',
       { params: { categoria: categoria } }
     );
+  }
+  addProduct(nombre: string, precio: number, cantidad: number, descripcion: string, imagenURL: string, categoria: string, proveedorID: number): Observable<any> {
+    return this.http.post<Producto>(environment.apiUrl + 'productos', {
+      nombre,
+      precio,
+      cantidad,
+      descripcion,
+      imagenURL,
+      categoria,
+      proveedorID
+    });
+  }
+  updateProduct(id: number, nombre: string, precio: number, cantidad: number, descripcion: string, imagenURL: string, categoria: string, proveedorID: number): Observable<any> {
+    return this.http.put<Producto>(environment.apiUrl + 'productos/' + id, {
+      nombre,
+      precio,
+      cantidad,
+      descripcion,
+      imagenURL,
+      categoria,
+      proveedorID
+    });
+  }
+  deleteProduct(id: number): Observable<any> {
+    return this.http.delete(environment.apiUrl + 'productos/' + id);
   }
 }

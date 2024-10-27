@@ -1,0 +1,21 @@
+<section>
+    <div class="contenedor">
+        <div class="form-registro">
+            <div class="logo">
+                <img src="logo.png" alt="Registro" class="imagen" (click)="redirectToHome()">
+            </div>
+            <div class="registro">
+                <h2>Registro de Usuario</h2>
+                <form id="form-registro">
+                    <input type="email" id="correo" placeholder="Correo electrónico" required>
+                    <input type="tel" id="telefono" placeholder="Teléfono" required pattern="\d{9}">
+                    <input type="text" id="dni" placeholder="Ingrese su número de DNI" required pattern="\d{8}">
+                    <input type="password" id="contrasena" placeholder="Contraseña" required>
+                    <input type="text" id="direccion" placeholder="Dirección de domicilio" required>
+                    <button type="submit">Registrar</button>
+                </form>
+                <p class="texto-pie">¿Ya tienes una cuenta? <a routerLink="/login">Inicia sesión aquí</a></p>
+            </div>
+        </div>
+    </div>
+</section>

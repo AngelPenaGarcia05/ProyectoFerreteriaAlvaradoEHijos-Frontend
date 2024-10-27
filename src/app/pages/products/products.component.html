@@ -18,33 +18,111 @@
                 <option value="seguridad">Seguridad</option>
             </select>
             <!--
-            <div class="price-range">
-                <input type="number" id="minPrice" placeholder="Precio mínimo">
-                <input type="number" id="maxPrice" placeholder="Precio máximo">
-            </div>
--->
+                <div class="price-range">
+                    <input type="number" id="minPrice" placeholder="Precio mínimo">
+                    <input type="number" id="maxPrice" placeholder="Precio máximo">
+                </div>
+                -->
             <button type="submit">Aplicar Filtros</button>
         </form>
-    </section>
+        @if (userRole == 'ADMIN'){
+        <app-modal #modal>
+            <div modal-header>{{ accionFormulario }}</div>
+            <div modal-body>
+                <form [formGroup]="productoForm" (ngSubmit)="onSubmit()">
+                    <label>Nombre</label>
+                    <input type="text"
+                        [class]="productoForm.get('nombre')?.hasError('required') && productoForm.get('nombre')?.touched ? 'invalid-input' : ''"
+                        formControlName="nombre" required>
 
+                    <label>Precio</label>
+                    <input type="number"
+                        [class]="productoForm.get('precio')?.hasError('required') && productoForm.get('precio')?.touched ? 'invalid-input' : ''"
+                        formControlName="precio" required>
+
+                    <label>Cantidad</label>
+                    <input type="number"
+                        [class]="productoForm.get('cantidad')?.hasError('required') && productoForm.get('cantidad')?.touched ? 'invalid-input' : ''"
+                        formControlName="cantidad" required>
+
+                    <label>Descripción</label>
+                    <textarea style="width: 100%;"
+                        [class]="productoForm.get('descripcion')?.hasError('required') && productoForm.get('descripcion')?.touched ? 'invalid-input' : ''"
+                        formControlName="descripcion" required></textarea>
+
+                    <label>URL de la Imagen</label>
+                    <input type="text"
+                        [class]="productoForm.get('imagenURL')?.hasError('required') && productoForm.get('imagenURL')?.touched ? 'invalid-input' : ''"
+                        formControlName="imagenURL" required>
+
+                    <label>Categoría</label>
+                    <select formControlName="categoria" required>
+                        <option value="Herramientas">Herramientas</option>
+                        <option value="Ferreteria">Ferreteria</option>
+                        <option value="Construccion">Construcción</option>
+                        <option value="Electricidad">Electricidad</option>
+                        <option value="Pinturas">Pinturas</option>
+                        <option value="Plomeria">Plomeria</option>
+                        <option value="Jardineria">Jardinería</option>
+                        <option value="Carpinteria">Carpintería</option>
+                        <option value="Seguridad">Seguridad</option>
+                    </select>
+
+                    <label>ID del Proveedor</label>
+                    <select formControlName="proveedorID">
+                        @for (proveedor of proveedores | async; track $index) {
+                        <option value="{{proveedor.id}}">{{proveedor.nombre}}</option>
+                        }
+                    </select>
+
+                    <button type="submit">{{botonLabel}}</button>
+                </form>
+            </div>
+            <div modal-footer>
+            </div>
+        </app-modal>
+
+        <button class="open-modal-btn"
+            (click)="modal.openModal();
+            botonLabel='Guardar';
+            accionFormulario = 'Agregar producto';
+            cleanForm()">Agregar
+            producto</button>
+        }
+    </section>
     <section class="product-grid">
         @for (producto of productos | async; track $index) {
-            @defer (on viewport) {
-                <div class="product-card">
-                    <div class="product-image">
-                        <img [src]="producto.imagenURL" [alt]="'Producto ' + producto.id">
-                    </div>
-                    <h3>{{producto.nombre}}</h3>
-                    <div>
-                        <p>S/ {{producto.precio}}</p>
-                        <button (click)="viewProductDetails(producto.id)">Ver más</button>
-                    </div>
+        @defer (on viewport) {
+        <div class="product-card">
+            <div class="product-image">
+                <img [src]="producto.imagenURL" [alt]="'Producto ' + producto.id">
+            </div>
+            <h3>{{producto.nombre}}</h3>
+            <div>
+                <p>S/ {{producto.precio}}</p>
+                <button (click)="viewProductDetails(producto.id)">Ver más</button>
+            </div>
+            @if (userRole == 'ADMIN') {
+                <div class="admin-buttons">
+                    <button class="button-admin"
+                        (click)="modal.openModal();
+                        botonLabel='Actualizar';
+                        accionFormulario = 'Editar producto';
+                        placeDataInForm(producto);
+                        targetProductoId = producto.id">Editar</button>
+                    <button class="button-admin" (click)="eliminarProducto(producto.id)">Eliminar</button>
                 </div>
-            }@placeholder {
-                <app-product-loading/>
-            }@loading {
-                <app-product-loading/>
             }
+        </div>
+        }@placeholder {
+        <app-product-loading />
+        }@loading {
+        <app-product-loading />
+        }
         }
     </section>
 </div>
+<section class="pagination">
+    <app-pagination [totalPages]="cantidadPaginas" [currentPage]="1" (pageChange)="onPageChange($event)">
+    </app-pagination>
+</section>

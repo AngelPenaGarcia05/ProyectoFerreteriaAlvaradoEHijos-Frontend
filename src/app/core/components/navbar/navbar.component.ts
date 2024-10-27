@@ -1,5 +1,6 @@
-import { Component, ElementRef, ViewChild, viewChild } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, ElementRef, inject, OnInit, ViewChild, viewChild } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -16,12 +17,26 @@ import { RouterLink } from '@angular/router';
                 <img src="menu-hamburguesa.png" alt="Menú">
             </div>
             <ul #menubar class="navbar-list">
-                <li class="navbar-item"><a routerLink="/home">INICIO</a></li>
-                <li class="navbar-item"><a routerLink="/about">NOSOTROS</a></li>
+                @if(!userRole){
+                    <li class="navbar-item"><a routerLink="/home">INICIO</a></li>
+                    <li class="navbar-item"><a routerLink="/about">NOSOTROS</a></li>
+                }
                 <li class="navbar-item"><a routerLink="/productos">PRODUCTOS</a></li>
-                <li class="navbar-item"><a href="">CONTACTO</a></li>
-                <li class="navbar-item"><a href="">INICIAR SESIÓN</a></li>
+                @if(userRole == 'ADMIN'){
+                    <li class="navbar-item"><a routerLink="/proveedores">PROVEEDORES</a></li>
+                }
+                @if(!userRole){
+                    <li class="navbar-item"><a href="">CONTACTO</a></li>
+                }
+                @if (userRole == 'ADMIN' || userRole == 'USER'){
+                    <li class="navbar-item"><a>{{userRole}}</a></li>
+                }@else {
+                    <li class="navbar-item"><a routerLink="/login">INICIAR SESIÓN</a></li>
+                }
                 <li class="navbar-item"><a routerLink="/shopping-cart"><img src="carrito-de-compras.png" class="navbar-carrito" height="20px" alt="Carrito de compras"></a></li>
+                @if (userRole){
+                    <li class="navbar-item"><a (click)="cerrarSesion()">CERRAR SESIÓN</a></li>
+                }
                 <img class="x-image" src="x-image.png" (click)="translateXMenu()" alt="Cerrar menú">
             </ul>
         </nav>
@@ -40,11 +55,26 @@ import { RouterLink } from '@angular/router';
   `,
   styleUrl: './navbar.component.css'
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
+    authService = inject(AuthService);
+    userRole: string | null = null;
+    constructor(private router: Router) {
+    }
+    
+    ngOnInit(): void {
+        this.userRole = this.authService.getUserRole();
+    }
     @ViewChild('menubar') menuBar!: ElementRef;
+
+    
 
     translateXMenu(){
         this.menuBar.nativeElement.style.transform == 'translateX(-100%)'
         ? this.menuBar.nativeElement.style.transform = 'translateX(0)' : this.menuBar.nativeElement.style.transform = 'translateX(-100%)';
     }
+    cerrarSesion(){
+        localStorage.removeItem('token');
+        this.router.navigate(['/login']);
+    }
+    
 }

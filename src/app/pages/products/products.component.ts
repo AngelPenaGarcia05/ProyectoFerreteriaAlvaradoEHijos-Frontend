@@ -1,67 +1,206 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewChild, viewChild } from '@angular/core';
 import { NavbarComponent } from '../../core/components/navbar/navbar.component';
 import { Observable } from 'rxjs';
 import { ProductoService } from '../../core/services/producto.service';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { Producto } from '../../core/interfaces/producto';
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProductLoadingComponent } from '../../core/components/product-loading/product-loading.component';
+import { PaginationComponent } from '../../core/components/pagination/pagination.component';
+import { AuthService } from '../../core/services/auth.service';
+import { ModalComponent } from '../../core/components/modal/modal.component';
+import { ProveedorService } from '../../core/services/proveedor.service';
+import { Proveedor } from '../../core/interfaces/proveedor';
 
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [NavbarComponent, ProductLoadingComponent, AsyncPipe, RouterLink, RouterLinkActive, ReactiveFormsModule],
+  imports: [ModalComponent, NavbarComponent, ProductLoadingComponent, PaginationComponent, AsyncPipe, RouterLink, RouterLinkActive, ReactiveFormsModule],
   templateUrl: './products.component.html',
   styleUrl: './products.component.css'
 })
 export class ProductsComponent implements OnInit {
   productos!: Observable<Producto[]>;
-  productosPaginados!: Observable<{ productos: Producto[], cantidad: number }>;
+  proveedores!: Observable<Proveedor[]>;
   productService = inject(ProductoService);
-  
+  proveedorService = inject(ProveedorService);
+
+  cantidadProductos!: Observable<number>;
+  cantidadPaginas!: number;
+
+  userRole: string | null = null;
+  authService = inject(AuthService);
+
+  isOpen = false;
+
   filterForm = new FormGroup({
     nameFilter: new FormControl(''),
     categoryFilter: new FormControl('')
   });
 
-  paginaActual: number = 1;
-  cantidadPorPagina: number = 10;
-  inicio: number = 0;
-  cantidadPaginas: number = 0;
+  productoForm = new FormGroup({
+    nombre: new FormControl('', Validators.required),
+    precio: new FormControl('', Validators.required),
+    cantidad: new FormControl('', Validators.required),
+    descripcion: new FormControl('', Validators.required),
+    imagenURL: new FormControl('', Validators.required),
+    categoria: new FormControl('', Validators.required),
+    proveedorID: new FormControl('', Validators.required)
+  });
+
 
   constructor(private route: ActivatedRoute, private router: Router) {
 
   }
   ngOnInit() {
+    this.proveedores = this.proveedorService.getProveedores();
+    this.userRole = this.authService.getUserRole();
+    this.router.navigate(['/productos'], {
+      queryParams: {
+        inicio: 0,
+        cantidad: 10
+      }, queryParamsHandling: 'merge'
+    })
     this.loadProducts();
   }
+
+  //función para la navegación entre páginas
+  onPageChange(pagina: number) {
+    let indice = (pagina - 1) * 10;
+    this.router.navigate(['/productos'], {
+      queryParams: {
+        inicio: indice,
+        cantidad: 10
+      }, queryParamsHandling: 'merge'
+    });
+
+  }
+  //función para cargar los productos y definir el numeor de páginas
   loadProducts() {
     this.route.queryParams.subscribe(params => {
       this.productos = this.productService.getProducts(params);
+      this.cantidadProductos = this.productService.getQuantityProducts(params);
+      this.cantidadProductos.subscribe(cantidad => {
+        this.cantidadPaginas = Math.ceil(cantidad / 10);
+        console.log(this.cantidadPaginas);
+      });
     })
   }
-  loadProductsPaginated(paginaActual: number, cantidadPorPagina: number) {
-    this.productosPaginados = this.productService.getProductsPaginated(paginaActual, cantidadPorPagina);
-  }
+
+  //función para agregar los parametros de consulta a la url según los filtros
   setFiltersInRoute() {
     const queryParams: any = {};
-  
+
     const nameFilter = this.filterForm.get('nameFilter')?.value;
     const categoryFilter = this.filterForm.get('categoryFilter')?.value;
-  
+
     if (nameFilter) {
       queryParams.nombre = nameFilter;
     }
-  
+
     if (categoryFilter) {
       queryParams.categoria = categoryFilter;
     }
-  
+
+    queryParams.inicio = 0;
+    queryParams.cantidad = 10;
+
     this.router.navigate(['/productos'], { queryParams: Object.keys(queryParams).length ? queryParams : null });
   }
 
-  viewProductDetails(id: number){
+  //función para ver los detalles del producto
+  viewProductDetails(id: number) {
     this.router.navigate(['productos', id]);
+  }
+
+
+  accionFormulario: string = '';
+  botonLabel: string = '';
+  targetProductoId: number = 0;
+  @ViewChild('modal') modal!: ModalComponent;
+
+  onSubmit(){
+    switch(this.accionFormulario){
+      case 'Agregar producto':
+        this.guardarProducto();
+        break;
+      case 'Editar producto':
+        this.actualizarProducto(this.targetProductoId);
+        break;
+      default:
+        break;
+    }
+  }
+  //funcion para guardar un producto
+  guardarProducto() {
+    this.productService.addProduct(
+      this.productoForm.get('nombre')?.value ?? '',
+      Number(this.productoForm.get('precio')?.value) || 0,
+      Number(this.productoForm.get('cantidad')?.value) || 0,
+      this.productoForm.get('descripcion')?.value ?? '',
+      this.productoForm.get('imagenURL')?.value ?? '',
+      this.productoForm.get('categoria')?.value ?? '',
+      Number(this.productoForm.get('proveedorID')?.value) || 0
+    ).subscribe({
+      next: () => {
+        this.loadProducts();
+        alert("Producto creado con éxito");
+      },
+      error: (error) => {
+        console.log('Error durante la creación del producto: ' + error.message);
+      }
+    });
+  }
+
+  actualizarProducto(id: number) {
+    this.productService.updateProduct(
+      id,
+      this.productoForm.get('nombre')?.value ?? '',
+      Number(this.productoForm.get('precio')?.value) || 0,
+      Number(this.productoForm.get('cantidad')?.value) || 0,
+      this.productoForm.get('descripcion')?.value ?? '',
+      this.productoForm.get('imagenURL')?.value ?? '',
+      this.productoForm.get('categoria')?.value ?? '',
+      Number(this.productoForm.get('proveedorID')?.value) || 0
+    ).subscribe({
+      next: () => {
+        this.loadProducts();
+        alert("Producto actualizado con éxito");
+      },
+      error: (error) => {
+        console.log('Error durante la actualización del producto: ' + error.message);
+      }
+    });
+  }
+
+
+  //función para editar un producto
+  placeDataInForm(producto: Producto) {
+    this.productoForm.patchValue({
+      nombre: producto.nombre,
+      precio: String(producto.precio),
+      cantidad: String(producto.cantidad),
+      descripcion: producto.descripcion,
+      imagenURL: producto.imagenURL,
+      categoria: producto.categoria,
+      proveedorID: String(producto.proveedor.id)
+    });
+    console.log(producto);
+  }
+  cleanForm() {
+    this.productoForm.reset();
+  }
+  //función para eliminar un producto
+  eliminarProducto(id: number) {
+    this.productService.deleteProduct(id).subscribe({
+      next: () => {
+        this.loadProducts();
+        alert("Producto eliminado con éxito");
+      },
+      error: (error) => {
+        console.log('Error durante la eliminación del producto:' + error.message);
+      }
+    });
   }
 }

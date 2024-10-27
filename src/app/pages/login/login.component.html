@@ -1,0 +1,22 @@
+<section>
+    <div class="Contenedor">
+        <div class="contenedor-inicio">
+            <div class="logoEmpresa">
+                <img src="logo.png" alt="Daily UI" class="image" (click)="redirectToHome()">
+            </div>
+            <div class="inicio-sesion">
+                <h2>Inicio de Sesión</h2>
+                <form [formGroup]="formLogin" (ngSubmit)="onSubmit()">
+                    <input type="email" placeholder="Correo Electrónico"
+                        [class]="(formLogin.get('email')?.hasError('required') || formLogin.get('email')?.hasError('email')) && formLogin.get('email')?.touched ? 'invalid-input' : ''"
+                        formControlName="email" required>
+                    <input type="password" placeholder="Contraseña"
+                        [class]="(formLogin.get('contrasena')?.hasError('required') ? 'invalid-input' : '') && formLogin.get('contrasena')?.touched ? 'invalid-input' : ''"
+                        formControlName="contrasena" required>
+                    <button type="submit">Iniciar Sesión</button>
+                </form>
+                <p class="texto-cuenta">¿No tienes una cuenta? <a routerLink="/registro">Regístrate aquí</a></p>
+            </div>
+        </div>
+    </div>
+</section>

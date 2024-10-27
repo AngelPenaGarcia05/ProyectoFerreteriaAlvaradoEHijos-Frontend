@@ -1,0 +1,78 @@
+<app-navbar></app-navbar>
+
+<div class="contenedor">
+    <button class="btn-agregar"
+        (click)="modal.openModal();
+        botonLabel='Agregar proveedor';
+        accionFormulario = 'Agregar proveedor';
+        cleanForm()">Agregar
+        proveedor</button>
+
+    <div class="contenedor-tabla">
+        <h2>Proveedores</h2>
+        <table class="tabla-personalizada">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Telefono</th>
+                    <th>Dirección</th>
+                    <th>Email</th>
+                    <th>RUC</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (proveedor of proveedores | async; track $index){
+                <tr>
+                    <td>{{proveedor.id}}</td>
+                    <td>{{proveedor.nombre}}</td>
+                    <td>{{proveedor.telefono}}</td>
+                    <td>{{proveedor.direccion}}</td>
+                    <td>{{proveedor.email}}</td>
+                    <td>{{proveedor.ruc}}</td>
+                    <td class="admin-buttons">
+                        <button class="btn-editar" (click)="modal.openModal();
+                        botonLabel='Actualizar';
+                        accionFormulario = 'Editar proveedor';
+                        placeDataInForm(proveedor);
+                        targetProveedorId = proveedor.id">Editar</button>
+                        <button class="btn-eliminar">Eliminar</button>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<app-modal #modal>
+    <div modal-header>{{ accionFormulario }}</div>
+    <div modal-body>
+        <form [formGroup]="proveedorForm" (ngSubmit)="onSubmit()">
+            <label>Nombre</label>
+            <input type="text"
+                [class]="proveedorForm.get('nombre')?.hasError('required') && proveedorForm.get('nombre')?.touched ? 'invalid-input' : ''"
+                formControlName="nombre" required>
+
+            <label>Dirección</label>
+            <input type="text"
+                [class]="proveedorForm.get('direccion')?.hasError('required') && proveedorForm.get('direccion')?.touched ? 'invalid-input' : ''"
+                formControlName="direccion" required>
+            <label for="telefono">Teléfono</label>
+            <input type="text" [class]="proveedorForm.get('telefono')?.hasError('required') && proveedorForm.get('telefono')?.touched ? 'invalid-input' : ''" formControlName="telefono" required>
+            <label>Email</label>
+            <input type="text"
+                [class]="proveedorForm.get('email')?.hasError('required') && proveedorForm.get('email')?.touched ? 'invalid-input' : ''"
+                formControlName="email" required>
+
+            <label>RUC</label>
+            <input type="text"
+                [class]="proveedorForm.get('ruc')?.hasError('required') && proveedorForm.get('ruc')?.touched ? 'invalid-input' : ''"
+                formControlName="ruc" required>
+
+            <button type="submit">{{botonLabel}}</button>
+        </form>
+    </div>
+    <div modal-footer>
+    </div>
+</app-modal>

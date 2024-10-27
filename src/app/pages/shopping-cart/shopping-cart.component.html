@@ -5,6 +5,7 @@
         <thead>
             <tr>
                 <th>Código</th>
+                <th>Imagen</th>
                 <th>Producto</th>
                 <th>Cantidad</th>
                 <th>Subtotal</th>
@@ -12,22 +13,24 @@
             </tr>
         </thead>
         <tbody>
-            @for (producto of productos; track $index) {}
-            <tr>
-                <td>001</td>
-                <td>Producto 1</td>
-                <td class="quantity">
-                    <button class="quantity-btn">-</button>
-                    <input type="number" value="1" min="1" class="quantity-input">
-                    <button class="quantity-btn">+</button>
-                </td>
-                <td>$25.00</td>
-                <td><button class="remove-btn">Eliminar</button></td>
-            </tr>
+            @for (item of productosEnCarrito; track $index) {
+                <tr>
+                    <td>{{item.producto.id}}</td>
+                    <td><img src="{{item.producto.imagenURL}}" alt="{{item.producto.nombre}}"></td>
+                    <td>{{item.producto.nombre}}</td>
+                    <td class="quantity">
+                        <button class="quantity-btn" (click)="decrementar(item.producto)">-</button>
+                        <input type="number" [value]="item.cantidad" min="1" class="quantity-input" disabled>
+                        <button class="quantity-btn" (click)="aumnetar(item.producto)">+</button>
+                    </td>
+                    <td>{{item.producto.precio * item.cantidad | currency:'PEN':'S/ '}}</td>
+                    <td><button class="remove-btn" (click)="eliminarProducto(item.producto)">Eliminar</button></td>
+                </tr>
+            }
         </tbody>
     </table>
 
     <div class="cart-total">
-        <h2>Total: $75.00</h2>
+        <h2>Total: {{total | currency:'PEN':'S/ '}}</h2>
     </div>
 </section>

@@ -10,7 +10,7 @@
             <p class="product-description">{{producto?.descripcion}}</p>
             <p class="product-price">S/ {{producto?.precio}}</p>
             <p class="product-stock">En stock: <span>{{producto?.cantidad}}</span></p>
-            <button class="add-to-cart-btn">
+            <button class="add-to-cart-btn" (click)="agregarAlCarrito(producto, 1)">
                 <img src="carrito-de-compras.png" alt="Icono de carrito de compra">
                 Agregar al carrito
             </button>

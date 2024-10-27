@@ -13,6 +13,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 })
 export class HomeComponent {
   correoFerreteria: string = 'alvaradoehijos@hotmail.com';
+
   formMail: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.maxLength(10)]),
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -46,13 +47,18 @@ export class HomeComponent {
   }
   constructor(private router: Router) {
   }
+  ngOnInit() {
+    
+  }
+
   sendMessage() {
 
   }
 
   openCategoryRoute(categoria: string) {
     this.router.navigate(['/productos'], {
-      queryParams: { categoria: categoria }
+      queryParams: { categoria: categoria },
+      queryParamsHandling: 'merge'
     });
   }
 }

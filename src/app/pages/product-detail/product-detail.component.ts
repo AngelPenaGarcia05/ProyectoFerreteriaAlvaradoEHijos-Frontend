@@ -6,6 +6,7 @@ import { ProductoService } from '../../core/services/producto.service';
 import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { ProductLoadingComponent } from '../../core/components/product-loading/product-loading.component';
+import { CarritoService } from '../../core/services/carrito.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -18,6 +19,7 @@ export class ProductDetailComponent implements OnInit {
   producto$!: Observable<Producto>;
   productosRelacionados!: Observable<Producto[]>;
   productService = inject(ProductoService);
+  carritoService = inject(CarritoService);
 
 
   constructor(private route: ActivatedRoute, private router: Router) { }
@@ -32,5 +34,9 @@ export class ProductDetailComponent implements OnInit {
   }
   viewProductDetails(id: number){
     this.router.navigate(['productos', id]);
+  }
+  agregarAlCarrito(producto: Producto | null, cantidad: number) {
+    if (!producto) return;
+    this.carritoService.agregarProducto(producto, cantidad);
   }
 }

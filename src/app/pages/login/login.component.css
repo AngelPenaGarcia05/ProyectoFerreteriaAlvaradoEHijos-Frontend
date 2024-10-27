@@ -1,0 +1,136 @@
+section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: radial-gradient(circle,var(--color-blue-light),var(--color-blue));
+}
+
+.Contenedor {
+  width: 800px;
+  height: 450px;
+  background-color: white;
+  border-radius: 20px;
+  display: flex;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.contenedor-inicio {
+  width: 100%;
+  display: flex;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logoEmpresa {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-right: 1px solid #eee;
+}
+
+.image {
+  width: 80%;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.inicio-sesion {
+  width: 50%;
+  padding: 40px;
+  position: relative;
+}
+
+h2 {
+  margin-bottom: 30px;
+  color: #333;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+input {
+  height: 45px;
+  margin-bottom: 20px;
+  padding: 0 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+button {
+  height: 45px;
+  background-color: #586ae8;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+button:hover {
+  background-color: #4859c7;
+}
+
+button {
+  height: 45px;
+  background-color: var(--color-blue);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  transition: all 0.3s;
+}
+
+button:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-blue-light);
+  border-radius: 8px;
+  z-index: -2;
+}
+
+button:before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 100%;
+  background-color: var(--color-orange);
+  transition: all 0.3s;
+  border-radius: 8px;
+  z-index: -1;
+}
+
+button:hover {
+  color: white;
+}
+
+button:hover:before {
+  width: 100%;
+}
+
+.texto-cuenta {
+  color: #586ae8;
+  font-size: 14px;
+  text-align: center;
+  cursor: pointer;
+}
+.invalid-input {
+  border: 1px solid red;
+}
