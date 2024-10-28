@@ -83,7 +83,6 @@ export class ProductsComponent implements OnInit {
       this.cantidadProductos = this.productService.getQuantityProducts(params);
       this.cantidadProductos.subscribe(cantidad => {
         this.cantidadPaginas = Math.ceil(cantidad / 10);
-        console.log(this.cantidadPaginas);
       });
     })
   }
@@ -124,9 +123,11 @@ export class ProductsComponent implements OnInit {
     switch(this.accionFormulario){
       case 'Agregar producto':
         this.guardarProducto();
+        this.modal.closeModal();
         break;
       case 'Editar producto':
         this.actualizarProducto(this.targetProductoId);
+        this.modal.closeModal();
         break;
       default:
         break;
@@ -149,6 +150,7 @@ export class ProductsComponent implements OnInit {
       },
       error: (error) => {
         console.log('Error durante la creación del producto: ' + error.message);
+        alert(error.message);
       }
     });
   }
@@ -170,6 +172,7 @@ export class ProductsComponent implements OnInit {
       },
       error: (error) => {
         console.log('Error durante la actualización del producto: ' + error.message);
+        alert(error.message);
       }
     });
   }

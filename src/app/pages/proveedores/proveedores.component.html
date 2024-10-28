@@ -37,7 +37,7 @@
                         accionFormulario = 'Editar proveedor';
                         placeDataInForm(proveedor);
                         targetProveedorId = proveedor.id">Editar</button>
-                        <button class="btn-eliminar">Eliminar</button>
+                        <button class="btn-eliminar" (click)="eliminarProveedor(proveedor.id)">Eliminar</button>
                     </td>
                 </tr>
                 }
@@ -48,7 +48,7 @@
 <app-modal #modal>
     <div modal-header>{{ accionFormulario }}</div>
     <div modal-body>
-        <form [formGroup]="proveedorForm" (ngSubmit)="onSubmit()">
+        <form class="form-proveedores" [formGroup]="proveedorForm" (ngSubmit)="onSubmit()">
             <label>Nombre</label>
             <input type="text"
                 [class]="proveedorForm.get('nombre')?.hasError('required') && proveedorForm.get('nombre')?.touched ? 'invalid-input' : ''"
@@ -70,7 +70,7 @@
                 [class]="proveedorForm.get('ruc')?.hasError('required') && proveedorForm.get('ruc')?.touched ? 'invalid-input' : ''"
                 formControlName="ruc" required>
 
-            <button type="submit">{{botonLabel}}</button>
+            <button [disabled]="proveedorForm.invalid" [class]="proveedorForm.invalid ? 'disabled-button' : ''" type="submit">{{botonLabel}}</button>
         </form>
     </div>
     <div modal-footer>

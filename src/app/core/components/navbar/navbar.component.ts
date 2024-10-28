@@ -1,11 +1,12 @@
 import { Component, ElementRef, inject, OnInit, ViewChild, viewChild } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { UserCardComponent } from '../user-card/user-card.component';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, UserCardComponent],
   template: `
     <header>
         <nav class="navbar-container">
@@ -17,7 +18,7 @@ import { AuthService } from '../../services/auth.service';
                 <img src="menu-hamburguesa.png" alt="Menú">
             </div>
             <ul #menubar class="navbar-list">
-                @if(!userRole){
+                @if(!userRole || userRole != 'ADMIN'){
                     <li class="navbar-item"><a routerLink="/home">INICIO</a></li>
                     <li class="navbar-item"><a routerLink="/about">NOSOTROS</a></li>
                 }
@@ -29,7 +30,9 @@ import { AuthService } from '../../services/auth.service';
                     <li class="navbar-item"><a href="">CONTACTO</a></li>
                 }
                 @if (userRole == 'ADMIN' || userRole == 'USER'){
-                    <li class="navbar-item"><a>{{userRole}}</a></li>
+                    <li class="navbar-item"><a>
+                        <app-user-card [userNames]="userNames" [userId]="userId" [userRole]="userRole"></app-user-card>
+                    </a></li>
                 }@else {
                     <li class="navbar-item"><a routerLink="/login">INICIAR SESIÓN</a></li>
                 }
@@ -58,11 +61,15 @@ import { AuthService } from '../../services/auth.service';
 export class NavbarComponent implements OnInit {
     authService = inject(AuthService);
     userRole: string | null = null;
+    userId: number = 0;
+    userNames: string = '';
     constructor(private router: Router) {
     }
     
     ngOnInit(): void {
         this.userRole = this.authService.getUserRole();
+        this.userId = this.authService.getUserId();
+        this.userNames = this.authService.getUserNames();
     }
     @ViewChild('menubar') menuBar!: ElementRef;
 

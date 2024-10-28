@@ -75,7 +75,7 @@
                         }
                     </select>
 
-                    <button type="submit">{{botonLabel}}</button>
+                    <button [disabled]="productoForm.invalid" [class]="productoForm.invalid ? 'disabled-button' : ''" type="submit">{{botonLabel}}</button>
                 </form>
             </div>
             <div modal-footer>

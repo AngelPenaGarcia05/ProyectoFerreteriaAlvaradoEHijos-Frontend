@@ -40,7 +40,18 @@ export class ProveedoresComponent {
     this.proveedores = this.proveedorService.getProveedores();
   }
   onSubmit() {
-    throw new Error('Method not implemented.');
+    switch (this.accionFormulario) {
+      case 'Agregar proveedor':
+        this.guardarProveedor();
+        this.modal.closeModal();
+        break;
+      case 'Editar proveedor':
+        this.actualizarProveedor(this.targetProveedorId);
+        this.modal.closeModal();
+        break;
+      default:
+        break;
+    }
   }
   guardarProveedor() {
     this.proveedorService.addProveedor(
@@ -74,6 +85,17 @@ export class ProveedoresComponent {
       },
       error: (error) => {
         console.log('Error durante la actualización del proveedor: ' + error.message);
+      }
+    });
+  }
+  eliminarProveedor(id: number) {
+    this.proveedorService.deleteProveedor(id).subscribe({
+      next: () => {
+        this.loadProveedores();
+        alert("Proveedor eliminado con éxito");
+      },
+      error: (error) => {
+        console.log('Error durante la eliminación del proveedor:' + error.message);
       }
     });
   }

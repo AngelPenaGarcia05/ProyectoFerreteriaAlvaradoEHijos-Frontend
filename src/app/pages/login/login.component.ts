@@ -33,6 +33,7 @@ export class LoginComponent {
       },
       error: (error) => {
         console.log('Error durante el login:' + error.message);
+        alert(error.message);
       }
     });
   }

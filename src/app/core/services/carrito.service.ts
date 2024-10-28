@@ -41,6 +41,9 @@ export class CarritoService {
     //si el producto existe en el carrito, decrementa la cantidad
     if (this.carrito.some(carrito => carrito.producto.id === producto.id)) {
       const index = this.carrito.findIndex(carrito => carrito.producto.id === producto.id);
+      if(this.carrito[index].cantidad === 1){
+        return;
+      }
       this.carrito[index].cantidad--;
     }
     localStorage.setItem('carrito', JSON.stringify(this.carrito));
