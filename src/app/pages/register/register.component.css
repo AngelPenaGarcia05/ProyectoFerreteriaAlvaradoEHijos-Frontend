@@ -117,3 +117,7 @@ button:hover:before {
   text-align: center;
   cursor: pointer;
 }
+.disabled-button{
+  background-color: var(--color-blue-transparent) !important;
+  cursor: not-allowed !important;
+}

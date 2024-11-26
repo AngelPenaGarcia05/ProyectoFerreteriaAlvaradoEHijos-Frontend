@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Producto } from '../interfaces/producto';
 import { Carrito } from '../interfaces/carrito';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -9,11 +10,16 @@ export class CarritoService {
 
   carrito: Carrito[];
   total: number;
+  isBrowser: boolean;
 
-  constructor() {
-    this.carrito = [];
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
     this.total = 0;
-    this.carrito = localStorage.getItem('carrito') ? JSON.parse(localStorage.getItem('carrito')!) : [];
+    this.carrito = [];
+    if (this.isBrowser) {
+      const storedCarrito = localStorage.getItem('carrito');
+      this.carrito = storedCarrito ? JSON.parse(storedCarrito) : [];
+    }
   }
 
   calcularTotal() {

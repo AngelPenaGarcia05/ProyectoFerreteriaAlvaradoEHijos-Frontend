@@ -103,6 +103,7 @@
                 <button (click)="viewProductDetails(producto.id)">Ver más</button>
             </div>
             @if (userRole == 'ADMIN') {
+                <p><strong>Stock: </strong>{{producto.cantidad}}</p>
                 <div class="admin-buttons">
                     <button class="button-admin"
                         (click)="modal.openModal();

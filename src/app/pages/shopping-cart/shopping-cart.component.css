@@ -91,6 +91,26 @@ h1 {
     font-size: 1.5em;
     color: var(--color-blue);
 }
+.paypal-section {
+    width: 80%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.paypal-btn {
+    background-color: var(--color-blue);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 1em;
+    border-radius: 5px;
+}
+/* Hacer que el modal tenga scroll */
+.modal-body{
+    max-height: 80vh;
+    overflow-y: auto;
+}
 
 @media (max-width: 768px) {
     .cart-table th, .cart-table td {

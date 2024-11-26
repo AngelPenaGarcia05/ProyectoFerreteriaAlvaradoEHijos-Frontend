@@ -21,7 +21,7 @@
                     <td class="quantity">
                         <button class="quantity-btn" (click)="decrementar(item.producto)">-</button>
                         <input type="number" [value]="item.cantidad" min="1" class="quantity-input" disabled>
-                        <button class="quantity-btn" (click)="aumnetar(item.producto)">+</button>
+                        <button class="quantity-btn" (click)="aumentar(item.producto)">+</button>
                     </td>
                     <td>{{item.producto.precio * item.cantidad | currency:'PEN':'S/ '}}</td>
                     <td><button class="remove-btn" (click)="eliminarProducto(item.producto)">Eliminar</button></td>
@@ -34,3 +34,14 @@
         <h2>Total: {{total | currency:'PEN':'S/ '}}</h2>
     </div>
 </section>
+<section class="paypal-section">
+    <button class="paypal-btn" (click)="confimarPago()">Pagar con Paypal</button>
+</section>
+<app-modal #modal>
+    <div modal-header>Pago con Paypal</div>
+    <div class="modal-body" modal-body>
+        <app-paypal-button [amount]="total"></app-paypal-button>
+    </div>
+    <div modal-footer>
+    </div>
+</app-modal>

@@ -8,11 +8,13 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { ProveedoresComponent } from './pages/proveedores/proveedores.component';
 import { authGuard } from './core/guards/auth.guard';
+import { ContactComponent } from './pages/contact/contact.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home', component: HomeComponent },
     { path: 'about', component: AboutComponent},
+    { path: 'contact', component: ContactComponent},
     { path: 'productos', component: ProductsComponent},
     { path: 'productos/:id', component: ProductDetailComponent },
     { path: 'shopping-cart', component: ShoppingCartComponent},

@@ -76,7 +76,7 @@ export class ProductsComponent implements OnInit {
     });
 
   }
-  //función para cargar los productos y definir el numeor de páginas
+  //función para cargar los productos y definir el numero de páginas
   loadProducts() {
     this.route.queryParams.subscribe(params => {
       this.productos = this.productService.getProducts(params);

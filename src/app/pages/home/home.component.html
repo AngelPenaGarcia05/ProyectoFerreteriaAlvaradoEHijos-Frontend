@@ -115,7 +115,8 @@
                 [class]="validInputs('email', 'email')">
             <textarea placeholder="Mensaje" id="message" formControlName="message"
                 [class]="validInputs('message', 'textarea')"></textarea>
-            <button type="submit" [disabled]="formMail.invalid" [class]="this.formMail.invalid ? 'invalid-input' : ''">Enviar</button>
+            <button type="submit" [disabled]="formMail.invalid"
+                [class]="this.formMail.invalid ? 'invalid-input' : ''">Enviar</button>
         </form>
     </div>
 </footer>

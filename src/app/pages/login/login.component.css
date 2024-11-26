@@ -134,3 +134,7 @@ button:hover:before {
 .invalid-input {
   border: 1px solid red;
 }
+.disabled-button{
+  background-color: var(--color-blue-transparent) !important;
+  cursor: not-allowed !important;
+}

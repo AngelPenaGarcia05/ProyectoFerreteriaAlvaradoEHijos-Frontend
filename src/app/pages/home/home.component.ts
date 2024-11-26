@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AsyncPipe } from '@angular/common';
 import { NavbarComponent } from '../../core/components/navbar/navbar.component';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { EmailService } from '../../core/services/email.service';
 
 @Component({
   selector: 'app-home',
@@ -13,6 +14,8 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 })
 export class HomeComponent {
   correoFerreteria: string = 'alvaradoehijos@hotmail.com';
+
+  emailService = inject(EmailService);
 
   formMail: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.maxLength(10)]),
@@ -52,7 +55,19 @@ export class HomeComponent {
   }
 
   sendMessage() {
-
+    this.emailService.sendEmail(
+      this.formMail.get('email')?.value,
+      this.formMail.get('name')?.value,
+      this.formMail.get('message')?.value
+    ).subscribe({
+      next: () => {
+        alert('Mensaje enviado correctamente');
+      },
+      error: (error) => {
+        console.log('Error durante el envio del mensaje:' + error.message);
+        alert(error.message);
+      }
+    });
   }
 
   openCategoryRoute(categoria: string) {

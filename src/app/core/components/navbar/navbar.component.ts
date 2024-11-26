@@ -27,7 +27,7 @@ import { UserCardComponent } from '../user-card/user-card.component';
                     <li class="navbar-item"><a routerLink="/proveedores">PROVEEDORES</a></li>
                 }
                 @if(!userRole){
-                    <li class="navbar-item"><a href="">CONTACTO</a></li>
+                    <li class="navbar-item"><a routerLink="/contact">CONTACTO</a></li>
                 }
                 @if (userRole == 'ADMIN' || userRole == 'USER'){
                     <li class="navbar-item"><a>

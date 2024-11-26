@@ -104,7 +104,7 @@ h2 {
     gap: 10px;
 }
 .form-proveedores label, .form-proveedores input, .form-proveedores button{
-    border-radius: 8px;
+    border-radius: 5px;
     width: 100%;
 }
 .form-proveedores input, .form-proveedores button{
@@ -113,7 +113,7 @@ h2 {
 .form-proveedores input{
     border: none;
     border: 1px solid #ccc;
-    height: 30px;
+    height: 35px;
 }
 .form-proveedores button{
     background-color: var(--color-blue);
