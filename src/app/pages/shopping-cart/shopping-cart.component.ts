@@ -8,6 +8,8 @@ import { PaypalButtonComponent } from '../../core/components/paypal-button/paypa
 import { ModalComponent } from '../../core/components/modal/modal.component';
 import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
+import { VentaService } from '../../core/services/venta.service';
+import { error } from 'console';
 
 @Component({
   selector: 'app-shopping-cart',
@@ -22,6 +24,7 @@ export class ShoppingCartComponent {
   productos: Producto[];
   total: number;
 
+  ventaService = inject(VentaService);
   carritoService = inject(CarritoService);
   authService = inject(AuthService);
 
@@ -64,5 +67,4 @@ export class ShoppingCartComponent {
       this.router.navigate(['/login']);
     }
   }
-
 }
