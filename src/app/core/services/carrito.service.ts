@@ -2,6 +2,9 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Producto } from '../interfaces/producto';
 import { Carrito } from '../interfaces/carrito';
 import { isPlatformBrowser } from '@angular/common';
+import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -10,11 +13,13 @@ export class CarritoService {
 
   carrito: Carrito[];
   total: number;
+  totalConverted: number;
   isBrowser: boolean;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+  constructor(@Inject(PLATFORM_ID) private platformId: Object, private http: HttpClient) {
     this.isBrowser = isPlatformBrowser(this.platformId);
     this.total = 0;
+    this.totalConverted = 0;
     this.carrito = [];
     if (this.isBrowser) {
       const storedCarrito = localStorage.getItem('carrito');
@@ -25,6 +30,7 @@ export class CarritoService {
   calcularTotal() {
     this.total = this.carrito.reduce((total, carrito) => total + carrito.producto.precio * carrito.cantidad, 0);
   }
+  
   obtenerCarrito() {
     this.calcularTotal();
     return this.carrito;
@@ -65,5 +71,12 @@ export class CarritoService {
   removerProducto(producto: Producto) {
     this.carrito = this.carrito.filter(carrito => carrito.producto.id !== producto.id);
     localStorage.setItem('carrito', JSON.stringify(this.carrito));
+  }
+  limpiarCarrito() {
+    this.carrito = [];
+  }
+  convertAmount(fromCurrency: string, toCurrency: string, amount: number): Observable<number> {
+    const url = environment.apiUrl + 'currency/convert';
+    return this.http.get<number>(url, { params: { fromCurrency, toCurrency, amount } });
   }
 }

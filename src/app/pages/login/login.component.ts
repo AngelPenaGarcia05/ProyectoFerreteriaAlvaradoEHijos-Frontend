@@ -3,6 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { response } from 'express';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -14,6 +15,7 @@ import { response } from 'express';
 export class LoginComponent {
 
   authService = inject(AuthService);
+  toastrService = inject(ToastrService);
 
 
   formLogin:FormGroup = new FormGroup({
@@ -30,10 +32,10 @@ export class LoginComponent {
       next: (response) => {
         localStorage.setItem('token', response.token);
         this.router.navigate(['/home']);
+        this.toastrService.success('Bienvenido');
       },
       error: (error) => {
         console.log('Error durante el login:' + error.message);
-        alert(error.message);
       }
     });
   }

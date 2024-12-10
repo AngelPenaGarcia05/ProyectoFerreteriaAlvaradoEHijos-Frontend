@@ -1,0 +1,80 @@
+.table-container {
+    overflow-x: auto;
+    /* Hacer scroll horizontal en pantallas pequeñas */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Sombra estilo Material */
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 10px;
+}
+.informacion-btn{
+    background-color: var(--color-blue);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 1em;
+    border-radius: 5px;
+}
+.eliminar-btn{
+    background-color: var(--color-orange);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 1em;
+    border-radius: 5px;
+}
+.margin-custom{
+    margin-right: 10px;
+}
+.modal-body p{
+    margin-bottom: 10px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    /* Mantener los bordes redondeados */
+}
+
+th,
+td {
+    padding: 16px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+    /* Línea sutil entre filas */
+}
+
+th {
+    background-color: #003c71d4;
+    /* Color principal */
+    color: white;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+    /* Suave cambio de color al pasar el mouse */
+    transition: background-color 0.3s ease;
+}
+
+tr:last-child td {
+    border-bottom: none;
+    /* Quitar la línea en la última fila */
+}
+
+@media (max-width: 600px) {
+    table {
+        font-size: 14px;
+    }
+
+    th,
+    td {
+        padding: 12px;
+    }
+}

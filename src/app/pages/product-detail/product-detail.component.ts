@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { ProductLoadingComponent } from '../../core/components/product-loading/product-loading.component';
 import { CarritoService } from '../../core/services/carrito.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-product-detail',
@@ -20,6 +21,8 @@ export class ProductDetailComponent implements OnInit {
   productosRelacionados!: Observable<Producto[]>;
   productService = inject(ProductoService);
   carritoService = inject(CarritoService);
+  toastrService = inject(ToastrService);
+  sinStock: boolean = false;
 
 
   constructor(private route: ActivatedRoute, private router: Router) { }
@@ -27,6 +30,7 @@ export class ProductDetailComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.producto$ = this.productService.getProductById(params['id']);
+      this.producto$.subscribe(producto => this.sinStock = producto.cantidad <= 0);
       this.producto$.subscribe(producto => {
         this.productosRelacionados = this.productService.getProductsByCategory(producto.categoria);
       })
@@ -37,6 +41,7 @@ export class ProductDetailComponent implements OnInit {
   }
   agregarAlCarrito(producto: Producto | null, cantidad: number) {
     if (!producto) return;
+    this.toastrService.success('Producto agregado al carrito');
     this.carritoService.agregarProducto(producto, cantidad);
   }
 }

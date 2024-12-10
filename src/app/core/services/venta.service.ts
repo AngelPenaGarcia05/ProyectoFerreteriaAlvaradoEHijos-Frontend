@@ -10,10 +10,9 @@ import { environment } from '../../../environments/environment';
 export class VentaService {
 
   constructor(private http: HttpClient) { }
-
   // Obtener todas las ventas
-  getVentas(): Observable<Venta[]> {
-    return this.http.get<Venta[]>(`${environment.apiUrl}ventas`);
+  getVentas(params: any): Observable<Venta[]> {
+    return this.http.get<Venta[]>(`${environment.apiUrl}ventas`, {params: params});
   }
 
   // Obtener una venta por ID
@@ -27,6 +26,11 @@ export class VentaService {
     estado: string,
     fecha: string,
     clienteID: number,
+    nombres: string,
+    direccion: string,
+    codigoPostal: string,
+    telefono: string,
+    instrucciones: string,
     detallesVenta: { productoID: number; cantidad: number }[]
   ): Observable<any> {
     return this.http.post<Venta>(`${environment.apiUrl}ventas`, {
@@ -34,26 +38,20 @@ export class VentaService {
       estado,
       fecha,
       clienteID,
+      nombres,
+      direccion,
+      codigoPostal,
+      telefono,
+      instrucciones,
       detallesVenta
     });
   }
 
   // Actualizar una venta existente
   updateVenta(
-    id: number,
-    tipoPago: string,
-    estado: string,
-    fecha: string,
-    clienteID: number,
-    detallesVenta: { productoID: number; cantidad: number }[]
+    id: number
   ): Observable<any> {
-    return this.http.put<Venta>(`${environment.apiUrl}ventas/${id}`, {
-      tipoPago,
-      estado,
-      fecha,
-      clienteID,
-      detallesVenta
-    });
+    return this.http.put<Venta>(`${environment.apiUrl}ventas/${id}`, {});
   }
 
   // Eliminar una venta

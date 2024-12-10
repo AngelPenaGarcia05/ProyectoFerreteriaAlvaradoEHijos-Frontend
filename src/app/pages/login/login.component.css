@@ -138,3 +138,15 @@ button:hover:before {
   background-color: var(--color-blue-transparent) !important;
   cursor: not-allowed !important;
 }
+
+@media (max-width: 768px){
+  .contenedor-inicio{
+    flex-direction: column;
+  }
+  .inicio-sesion{
+    width: 80%;
+  }
+  .Contenedor{
+    width: 90%;
+  }
+}

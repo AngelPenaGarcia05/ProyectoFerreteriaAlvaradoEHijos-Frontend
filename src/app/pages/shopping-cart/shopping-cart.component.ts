@@ -10,11 +10,12 @@ import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { VentaService } from '../../core/services/venta.service';
 import { error } from 'console';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-shopping-cart',
   standalone: true,
-  imports: [NavbarComponent, CurrencyPipe, PaypalButtonComponent, ModalComponent],
+  imports: [ReactiveFormsModule, NavbarComponent, CurrencyPipe, PaypalButtonComponent, ModalComponent],
   templateUrl: './shopping-cart.component.html',
   styleUrl: './shopping-cart.component.css'
 })
@@ -23,10 +24,19 @@ export class ShoppingCartComponent {
   productosEnCarrito: Carrito[];
   productos: Producto[];
   total: number;
+  totalConverted: number = 0;
 
   ventaService = inject(VentaService);
   carritoService = inject(CarritoService);
   authService = inject(AuthService);
+
+  dataSaleForm = new FormGroup({
+    name: new FormControl('', [Validators.required]),
+    address: new FormControl('', [Validators.required]),
+    postalCode: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(5), Validators.pattern('^[0-9]*$')]),
+    phone: new FormControl('', [Validators.required, Validators.minLength(9), Validators.maxLength(9), Validators.pattern('^[0-9]*$')]),
+    instructions: new FormControl('')
+  });
 
 
   @ViewChild('modal') modal!: ModalComponent;
@@ -35,6 +45,9 @@ export class ShoppingCartComponent {
     this.productosEnCarrito = this.carritoService.obtenerCarrito();
     this.productos = this.carritoService.obtenerProductos();
     this.total = this.carritoService.total;
+    this.carritoService.convertAmount('PEN', 'USD', this.total).subscribe(convertedTotal => {
+      this.totalConverted = convertedTotal;
+    });
   }
 
   cargarCarrito() {
@@ -58,6 +71,11 @@ export class ShoppingCartComponent {
   }
   eliminarProducto(Producto:Producto){
     this.carritoService.removerProducto(Producto);
+    this.cargarCarrito();
+  }
+  limpiarCarrito(){
+    this.dataSaleForm.reset();
+    this.carritoService.limpiarCarrito();
     this.cargarCarrito();
   }
   confimarPago(){

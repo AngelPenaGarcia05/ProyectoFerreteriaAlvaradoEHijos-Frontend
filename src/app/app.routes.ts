@@ -9,6 +9,8 @@ import { RegisterComponent } from './pages/register/register.component';
 import { ProveedoresComponent } from './pages/proveedores/proveedores.component';
 import { authGuard } from './core/guards/auth.guard';
 import { ContactComponent } from './pages/contact/contact.component';
+import { HistorialClienteComponent } from './pages/historial-cliente/historial-cliente.component';
+import { HistorialAdminComponent } from './pages/historial-admin/historial-admin.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -20,5 +22,7 @@ export const routes: Routes = [
     { path: 'shopping-cart', component: ShoppingCartComponent},
     { path: 'login', component: LoginComponent},
     { path: 'registro', component: RegisterComponent},
-    { path: 'proveedores', component: ProveedoresComponent, canActivate: [authGuard]}
+    { path: 'proveedores', component: ProveedoresComponent, canActivate: [authGuard]},
+    { path: 'historial-cliente', component: HistorialClienteComponent},
+    { path: 'historial-admin', component: HistorialAdminComponent, canActivate: [authGuard]},
 ];

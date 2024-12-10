@@ -1,19 +1,20 @@
 <app-navbar></app-navbar>
 <section class="cart-section">
     <h1>Carrito de Compras</h1>
-    <table class="cart-table">
-        <thead>
-            <tr>
-                <th>Código</th>
-                <th>Imagen</th>
-                <th>Producto</th>
-                <th>Cantidad</th>
-                <th>Subtotal</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @for (item of productosEnCarrito; track $index) {
+    <div class="table-container">
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Imagen</th>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Subtotal</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (item of productosEnCarrito; track $index) {
                 <tr>
                     <td>{{item.producto.id}}</td>
                     <td><img src="{{item.producto.imagenURL}}" alt="{{item.producto.nombre}}"></td>
@@ -26,21 +27,53 @@
                     <td>{{item.producto.precio * item.cantidad | currency:'PEN':'S/ '}}</td>
                     <td><button class="remove-btn" (click)="eliminarProducto(item.producto)">Eliminar</button></td>
                 </tr>
-            }
-        </tbody>
-    </table>
+                }
+            </tbody>
+        </table>
+    </div>
 
     <div class="cart-total">
         <h2>Total: {{total | currency:'PEN':'S/ '}}</h2>
     </div>
 </section>
+<section class="cart-section">
+    <form [formGroup]="dataSaleForm">
+        <div class="form-group">
+            <label for="name">Nombre Completo</label>
+            <input type="text" formControlName="name" id="name" name="name" placeholder="Ej. Juan Pérez" required
+            [class]="{'input-error': dataSaleForm.get('name')?.invalid && dataSaleForm.get('name')?.touched}">
+        </div>
+        <div class="form-group">
+            <label for="address">Dirección</label>
+            <input type="text" formControlName="address" id="address" name="address" placeholder="Calle, número, colonia" required
+            [class]="{'input-error': dataSaleForm.get('address')?.invalid && dataSaleForm.get('address')?.touched}">
+        </div>
+        <div class="form-group">
+            <label for="postal-code">Código Postal</label>
+            <input type="text" formControlName="postalCode" id="postal-code" name="postal-code" placeholder="Ej. 12345" required
+            [class]="{'input-error': dataSaleForm.get('postalCode')?.invalid && dataSaleForm.get('postalCode')?.touched}">
+        </div>
+        <div class="form-group">
+            <label for="phone">Teléfono</label>
+            <input type="tel" formControlName="phone" id="phone" name="phone" placeholder="Ej. 55 1234 5678" required
+            [class]="{'input-error': dataSaleForm.get('phone')?.invalid && dataSaleForm.get('phone')?.touched}">
+        </div>
+        <div class="form-group">
+            <label for="instructions">Instrucciones de Entrega</label>
+            <textarea id="instructions" formControlName="instructions" name="instructions"
+                placeholder="Ej. Dejar en la recepción, horario preferido, etc." rows="4"></textarea>
+        </div>
+    </form>
+</section>
 <section class="paypal-section">
-    <button class="paypal-btn" (click)="confimarPago()">Pagar con Paypal</button>
+    <button class="paypal-btn" [disabled]="dataSaleForm.invalid" (click)="confimarPago()">Pagar con Paypal</button>
 </section>
 <app-modal #modal>
     <div modal-header>Pago con Paypal</div>
     <div class="modal-body" modal-body>
-        <app-paypal-button [amount]="total"></app-paypal-button>
+        <app-paypal-button (paypalApproved)="limpiarCarrito()" [nombres]="dataSaleForm.get('name')?.value??''" [direccion]="dataSaleForm.get('address')?.value??''"
+        [codigoPostal]="dataSaleForm.get('postalCode')?.value??''" [telefono]="dataSaleForm.get('phone')?.value??''"
+        [instrucciones]="dataSaleForm.get('instructions')?.value??''" [amount]="totalConverted"></app-paypal-button>
     </div>
     <div modal-footer>
     </div>

@@ -231,4 +231,8 @@ header {
         border: none;
         padding: 20px 10px;
     }
+
+    .toggle-menu-bar{
+        transform: translateX(0);
+    }
 }

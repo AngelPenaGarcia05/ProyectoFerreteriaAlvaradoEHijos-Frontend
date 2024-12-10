@@ -23,8 +23,12 @@ import { UserCardComponent } from '../user-card/user-card.component';
                     <li class="navbar-item"><a routerLink="/about">NOSOTROS</a></li>
                 }
                 <li class="navbar-item"><a routerLink="/productos">PRODUCTOS</a></li>
+                @if(userRole){
+                    <li class="navbar-item"><a routerLink="/historial-cliente">HISTORIAL</a></li>
+                }
                 @if(userRole == 'ADMIN'){
                     <li class="navbar-item"><a routerLink="/proveedores">PROVEEDORES</a></li>
+                    <li class="navbar-item"><a routerLink="/historial-admin">VENTAS</a></li>
                 }
                 @if(!userRole){
                     <li class="navbar-item"><a routerLink="/contact">CONTACTO</a></li>
@@ -76,8 +80,7 @@ export class NavbarComponent implements OnInit {
     
 
     translateXMenu(){
-        this.menuBar.nativeElement.style.transform == 'translateX(-100%)'
-        ? this.menuBar.nativeElement.style.transform = 'translateX(0)' : this.menuBar.nativeElement.style.transform = 'translateX(-100%)';
+        this.menuBar.nativeElement.classList.toggle('toggle-menu-bar');
     }
     cerrarSesion(){
         localStorage.removeItem('token');

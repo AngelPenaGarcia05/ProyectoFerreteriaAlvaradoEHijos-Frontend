@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { ModalComponent } from '../../core/components/modal/modal.component';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-proveedores',
@@ -17,6 +18,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 export class ProveedoresComponent {
   proveedores!: Observable<Proveedor[]>;
   proveedorService = inject(ProveedorService);
+  toastrService = inject(ToastrService);
 
   accionFormulario: string = '';
   botonLabel: string = '';
@@ -63,7 +65,7 @@ export class ProveedoresComponent {
     ).subscribe({
       next: () => {
         this.loadProveedores();
-        alert("Proveedor creado con éxito");
+        this.toastrService.success('Proveedor creado exitosamente');
       },
       error: (error) => {
         console.log('Error durante la creación del proveedor: ' + error.message);
@@ -81,7 +83,7 @@ export class ProveedoresComponent {
     ).subscribe({
       next: () => {
         this.loadProveedores();
-        alert("Proveedor actualizado con éxito");
+        this.toastrService.success('Proveedor actualizado');
       },
       error: (error) => {
         console.log('Error durante la actualización del proveedor: ' + error.message);
@@ -92,7 +94,7 @@ export class ProveedoresComponent {
     this.proveedorService.deleteProveedor(id).subscribe({
       next: () => {
         this.loadProveedores();
-        alert("Proveedor eliminado con éxito");
+        this.toastrService.success('Proveedor eliminado');
       },
       error: (error) => {
         console.log('Error durante la eliminación del proveedor:' + error.message);

@@ -303,3 +303,19 @@ footer button {
     cursor: pointer;
     color: white;
 }
+@media (max-width: 768px){
+    div.advantage-card{
+        flex-direction: column;
+        width: 100%;
+    }
+    .contact-icons{
+        flex-direction: column;
+    }
+    .contact-info p{
+        width: 80%;
+        text-align: center;
+    }
+    .contact-form{
+        max-width: 300px;
+    }
+}

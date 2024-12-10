@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -13,6 +14,7 @@ import { AuthService } from '../../core/services/auth.service';
 export class RegisterComponent {
 
   authService = inject(AuthService);
+  toastrService = inject(ToastrService);
 
   registerForm = new FormGroup({
     correo: new FormControl('', [
@@ -49,10 +51,11 @@ export class RegisterComponent {
       next: (response) => {
         localStorage.setItem('token', response.token);
         this.router.navigate(['/home']);
+        this.toastrService.success('Bienvenido');
       },
       error: (error) => {
         console.log('Error durante el login:' + error.message);
-        alert(error.message);
+        this.toastrService.error(error.message);
       }
     });
   }

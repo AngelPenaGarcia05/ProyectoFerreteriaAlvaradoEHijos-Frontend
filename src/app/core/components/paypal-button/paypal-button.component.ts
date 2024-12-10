@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, inject, Inject, Input, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, inject, Inject, Input, OnInit, output, Output, PLATFORM_ID } from '@angular/core';
 import { VentaService } from '../../services/venta.service';
 import { CarritoService } from '../../services/carrito.service';
 import { AuthService } from '../../services/auth.service';
@@ -12,13 +12,18 @@ import { AuthService } from '../../services/auth.service';
 })
 export class PaypalButtonComponent {
   @Input() amount!: number;
+  @Input() nombres!: string;
+  @Input() direccion!: string;
+  @Input() codigoPostal!: string;
+  @Input() telefono!: string;
+  @Input() instrucciones!: string;
+  paypalApproved = output<void>();
   isBrowser: boolean;
 
   ventaService = inject(VentaService)
   carritoService = inject(CarritoService)
   authService = inject(AuthService)
-
-
+  
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object) {
     this.isBrowser = isPlatformBrowser(this.platformId);
@@ -40,7 +45,6 @@ export class PaypalButtonComponent {
       document.body.appendChild(scriptElement);
     });
   }
-
   renderPaypalButton(): void {
     const carrito = this.carritoService.obtenerCarrito();
     const total = this.carritoService.total;
@@ -53,7 +57,7 @@ export class PaypalButtonComponent {
         return actions.order.create({
           purchase_units: [{
             amount: {
-              value: total.toFixed(2) // Usar el total calculado
+              value: this.amount.toFixed(2) // Usar el total calculado
             }
           }]
         });
@@ -71,10 +75,15 @@ export class PaypalButtonComponent {
           // Preparar los datos de la venta
           const ventaData = {
             tipoPago: 'PayPal',
-            estado: 'Completada',
+            estado: 'Pendiente',
             fecha: new Date().toISOString(),
             clienteID:  this.authService.getUserId(),
             detallesVenta: detallesVenta,
+            nombres: this.nombres,
+            direccion: this.direccion,
+            codigoPostal: this.codigoPostal,
+            telefono: this.telefono,
+            instrucciones: this.instrucciones
           };
 
           // Insertar la venta utilizando VentaService
@@ -83,9 +92,15 @@ export class PaypalButtonComponent {
             ventaData.estado,
             ventaData.fecha,
             ventaData.clienteID,
+            ventaData.nombres,
+            ventaData.direccion,
+            ventaData.codigoPostal,
+            ventaData.telefono,
+            ventaData.instrucciones,
             ventaData.detallesVenta
           ).subscribe({
             next: (response) => {
+              this.paypalApproved.emit();
               console.log('Venta registrada con éxito', response);
             },
             error: (error) => {

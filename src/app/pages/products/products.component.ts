@@ -1,10 +1,10 @@
-import { Component, inject, OnInit, ViewChild, viewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { NavbarComponent } from '../../core/components/navbar/navbar.component';
 import { Observable } from 'rxjs';
 import { ProductoService } from '../../core/services/producto.service';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { Producto } from '../../core/interfaces/producto';
-import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProductLoadingComponent } from '../../core/components/product-loading/product-loading.component';
 import { PaginationComponent } from '../../core/components/pagination/pagination.component';
@@ -12,11 +12,12 @@ import { AuthService } from '../../core/services/auth.service';
 import { ModalComponent } from '../../core/components/modal/modal.component';
 import { ProveedorService } from '../../core/services/proveedor.service';
 import { Proveedor } from '../../core/interfaces/proveedor';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [ModalComponent, NavbarComponent, ProductLoadingComponent, PaginationComponent, AsyncPipe, RouterLink, RouterLinkActive, ReactiveFormsModule],
+  imports: [ModalComponent, NavbarComponent, ProductLoadingComponent, PaginationComponent, AsyncPipe, ReactiveFormsModule],
   templateUrl: './products.component.html',
   styleUrl: './products.component.css'
 })
@@ -25,6 +26,7 @@ export class ProductsComponent implements OnInit {
   proveedores!: Observable<Proveedor[]>;
   productService = inject(ProductoService);
   proveedorService = inject(ProveedorService);
+  toastrService = inject(ToastrService);
 
   cantidadProductos!: Observable<number>;
   cantidadPaginas!: number;
@@ -41,8 +43,8 @@ export class ProductsComponent implements OnInit {
 
   productoForm = new FormGroup({
     nombre: new FormControl('', Validators.required),
-    precio: new FormControl('', Validators.required),
-    cantidad: new FormControl('', Validators.required),
+    precio: new FormControl('', [Validators.required, Validators.min(0)]),
+    cantidad: new FormControl('', [Validators.required, Validators.min(0)]),
     descripcion: new FormControl('', Validators.required),
     imagenURL: new FormControl('', Validators.required),
     categoria: new FormControl('', Validators.required),
@@ -146,11 +148,10 @@ export class ProductsComponent implements OnInit {
     ).subscribe({
       next: () => {
         this.loadProducts();
-        alert("Producto creado con éxito");
+        this.toastrService.success('Producto creado');
       },
       error: (error) => {
         console.log('Error durante la creación del producto: ' + error.message);
-        alert(error.message);
       }
     });
   }
@@ -168,11 +169,10 @@ export class ProductsComponent implements OnInit {
     ).subscribe({
       next: () => {
         this.loadProducts();
-        alert("Producto actualizado con éxito");
+        this.toastrService.success('Producto actualizado');
       },
       error: (error) => {
         console.log('Error durante la actualización del producto: ' + error.message);
-        alert(error.message);
       }
     });
   }
@@ -199,7 +199,7 @@ export class ProductsComponent implements OnInit {
     this.productService.deleteProduct(id).subscribe({
       next: () => {
         this.loadProducts();
-        alert("Producto eliminado con éxito");
+        this.toastrService.success('Producto eliminado');
       },
       error: (error) => {
         console.log('Error durante la eliminación del producto:' + error.message);

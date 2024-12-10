@@ -166,6 +166,10 @@
     .price-range {
         flex-direction: column;
     }
+    .product-grid{
+        justify-items: center;
+        margin-right: 0;
+    }
 }
 .disabled-button{
     background-color: var(--color-blue-transparent) !important;

@@ -1,0 +1,72 @@
+<app-navbar></app-navbar>
+<div class="container">
+    <section class="ventas">
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tipo de pago</th>
+                        <th>Estado</th>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                        <th>Subtotal</th>
+                        <th>Fecha</th>
+                        <th>Total</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (venta of ventas; track $index) {
+                        @for (detalleventa of venta.detallesVenta; track $index) {
+                            <tr>
+                                @if ($index == 0) {
+                                    <td [rowSpan]="venta.detallesVenta.length">{{venta.id}}</td>
+                                    <td [rowSpan]="venta.detallesVenta.length">{{venta.tipoPago}}</td>
+                                    <td [rowSpan]="venta.detallesVenta.length">{{venta.estado}}</td>
+                                }
+                                <td>{{detalleventa.producto.nombre}}</td>
+                                <td>{{detalleventa.cantidad}}</td>
+                                <td>S/ {{detalleventa.producto.precio}}</td>
+                                <td>S/ {{detalleventa.subtotal}}</td>
+                                @if ($index == 0) {
+                                    <td [rowSpan]="venta.detallesVenta.length">{{venta.fecha}}</td>
+                                    <td [rowSpan]="venta.detallesVenta.length">S/ {{venta.total}}</td>
+                                    <td [rowSpan]="venta.detallesVenta.length">
+                                        <button class="informacion-btn margin-custom" (click)="openModal(venta)">Información</button>
+                                        <button class="eliminar-btn" (click)="openModalAtendido(venta)">Marcar como atendido</button>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+<app-modal #modalInformacion>
+    <div modal-header>Información</div>
+    <div class="modal-body" modal-body>
+        @if (ventaTracked) {
+            <p>Nombres: {{ventaTracked.nombres}}</p>
+            <p>Dirección: {{ventaTracked.direccion}}</p>
+            <p>Código Postal: {{ventaTracked.codigoPostal}}</p>
+            <p>Teléfono: {{ventaTracked.telefono}}</p>
+            <p>Instrucciones: {{ventaTracked.instrucciones}}</p>
+        }
+    </div>
+    <div modal-footer>
+    </div>
+</app-modal>
+<app-modal #modalAtendido>
+    <div modal-header>Marcar como atendido</div>
+    <div class="modal-body" modal-body>
+        ¿Estás seguro de que quieres marcar esta venta como atendida?
+    </div>
+    <div modal-footer>
+        <button class="informacion-btn margin-custom" (click)="marcarComoAtendido(ventaTracked)">SÍ</button>
+        <button class="informacion-btn" (click)="modalAtendido.closeModal()">NO</button>
+    </div>
+</app-modal>
